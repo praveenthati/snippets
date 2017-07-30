@@ -1,4 +1,40 @@
-   // MOCK SERVER FOR REST TEMPLATES //
+    // SPRING SECURITY //
+	https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/AdminEmployeesControllerTest.java
+	@AuthenticationPrincipal 
+    https://github.com/praveenthati/spring-drills/tree/authorization-assessment/assessments/spring-professionals
+	@PreAuthorize("hasAnyRole('ADMIN,PROFESSIONAL') and @getAuthorizationManagement.IsAuthorizedToView(#currentProfessional,#id)")
+	
+	 @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN,PROFESSIONAL') and @getAuthorizationManagement.IsAuthorizedToView(#currentProfessional,#id)")
+    public MappingJacksonValue getProfessional(@AuthenticationPrincipal Professional currentProfessional, @PathVariable Long id) throws Exception {
+
+
+        MappingJacksonValue returnVal = null;
+        Professional professional = db.findOne(id);
+
+        String role = currentProfessional != null ? currentProfessional.getRole() : "ANONYMOUS";
+
+        switch (role) {
+            case "ADMIN":
+                returnVal = new MappingJacksonValue(professional);
+                returnVal.setSerializationView(Views.AdminUserView.class);
+                break;
+            case "PROFESSIONAL":
+                returnVal = new MappingJacksonValue(professional);
+                if (currentProfessional.getId().longValue() == professional.getId().longValue()) {
+                    returnVal.setSerializationView(Views.ProfessionalUserSelfView.class);
+                } else {
+                    returnVal.setSerializationView(Views.ProfessionalUserView.class);
+                }
+                break;
+        }
+
+        return returnVal;
+    }
+
+
+
+    // MOCK SERVER FOR REST TEMPLATES //
    --> https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/testOMDBServiceWithMockServer.java
    --> https://github.com/praveenthati/spring-drills/blob/rest-template-assessment/assessments/resttemplate-reviews/src/test/Java/com/galvanize/testReviewController.java
    @RunWith(SpringRunner.class)
@@ -75,6 +111,8 @@
     runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile('com.google.code.gson:gson:2.8.0')
+	compile('org.springframework.boot:spring-boot-starter-security')
+    testCompile('org.springframework.security:spring-security-test')
 	
 	// FINDING DEPENDENCY //
 	http://start.spring.io/dependencies
@@ -210,8 +248,10 @@ public MappingJacksonValue getUser(@PathVariable int id) {
   // SAMPLE TESTS //
   -> CRUD https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/LessonsControllerTest.java
   
+  
   // SAMPLE SECURITY CONFIG //
   --> https://github.com/praveenthati/spring-playground/blob/master/src/main/java/com/example/security/SecurityConfig.java
+  
   
   
   
