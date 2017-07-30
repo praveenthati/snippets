@@ -1,4 +1,70 @@
- 
+   // MOCK SERVER FOR REST TEMPLATES //
+   --> https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/testOMDBServiceWithMockServer.java
+   @RunWith(SpringRunner.class)
+   public class DemoApplicationTests {
+
+    @Test
+    public void getRequestWorks() {
+        ZenService service = new ZenService();
+
+        // #1 - mock the correct instance
+        MockRestServiceServer mockServer = MockRestServiceServer.createServer(service.getRestTemplate());
+
+        mockServer
+                .expect(requestTo("https://api.github.com/zen"))                // <-- #2
+                .andExpect(method(HttpMethod.GET))                              // <-- #3
+                .andRespond(withSuccess("FooBar", MediaType.APPLICATION_JSON)); // <-- #4
+
+        assertThat(service.getMessage(), equalTo("FooBar"));                    // <-- #5
+        mockServer.verify();                                                    // <-- #6
+    }
+
+   }
+
+
+   // REST TEMPLATES //
+	--> https://github.com/praveenthati/spring-drills/blob/rest-template-assessment/assessments/resttemplate-reviews/src/main/java/com/galvanize/service/MoviesService.java
+	private final RestTemplate restTemplate = new RestTemplate();
+	
+	public String getMessage() {
+        return this.restTemplate.getForObject( // <------ #3
+          "https://api.github.com/zen",
+          String.class
+        );
+    }
+
+	public MessageReceipt postMessage(Message message) {
+    // Construct a URI from a template
+    URI uri = UriComponentsBuilder
+            .fromUriString("{host}/messages/send")
+            .buildAndExpand(config.getUrl())
+            .toUri();
+
+    // Create the request object
+    RequestEntity<?> request = RequestEntity.post(uri)
+            .header("Authorization", config.getToken())
+            .body(message);
+
+    // Execute the request
+    ResponseEntity<MessageReceipt> response = this.restTemplate.exchange(
+            request,
+            MessageReceipt.class // Declare the _type_ of the response
+    );
+
+    // Get the deserialized response body
+    return response.getBody();
+   }
+   
+    ResponseEntity<Map<String, String>> responseEntity = this.restTemplate.exchange(
+    requestEntity,
+    new ParameterizedTypeReference<Map<String, String>>() {
+    },
+  );
+
+  
+
+
+
     //// SAMPLE GRADLE ////
 	
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
