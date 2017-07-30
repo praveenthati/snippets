@@ -1,5 +1,6 @@
    // MOCK SERVER FOR REST TEMPLATES //
    --> https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/testOMDBServiceWithMockServer.java
+   --> https://github.com/praveenthati/spring-drills/blob/rest-template-assessment/assessments/resttemplate-reviews/src/test/Java/com/galvanize/testReviewController.java
    @RunWith(SpringRunner.class)
    public class DemoApplicationTests {
 
