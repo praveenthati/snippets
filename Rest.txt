@@ -110,5 +110,23 @@ public MappingJacksonValue getUser(@PathVariable int id) {
     return value;
 }
 
+   // MOCK BEAN
+   
+   @RunWith(SpringRunner.class)
+	@WebMvcTest(StringsController.class)
+	public class StringsControllerTest {
+		@MockBean
+		MyConfig config;
+
+		@Before
+		public void setup() {
+			when(config.getDelimiter()).thenReturn(":");
+		}
+
+	}
+
   // SAMPLE TESTS //
   -> CRUD https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/LessonsControllerTest.java
+  
+  // SAMPLE SECURITY CONFIG //
+  --> https://github.com/praveenthati/spring-playground/blob/master/src/main/java/com/example/security/SecurityConfig.java
