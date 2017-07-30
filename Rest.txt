@@ -7,14 +7,21 @@
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile('com.google.code.gson:gson:2.8.0')
 	
+	// FINDING DEPENDENCY //
+	http://start.spring.io/dependencies
+	http://search.maven.org/
+	
 	// ADDING DATABASE TO PROJECT //
 	
 	spring.datasource.url=jdbc:mysql://localhost/spring_playground?serverTimezone=UTC
 	spring.datasource.username=root
 	spring.datasource.password=
 	spring.datasource.driver-class-name=com.mysql.jdbc.Driver
-	spring.jpa.hibernate.ddl-auto=update
 	spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+	spring.jpa.hibernate.ddl-auto=none
+	spring.jpa.properties.hibernate.show_sql=true
+	spring.jpa.properties.hibernate.use_sql_comments=true
+    spring.jpa.properties.hibernate.format_sql=true
 	
 	// JPA //
 	public interface LessonRepository extends CrudRepository<Lesson, Long> {}
@@ -102,3 +109,6 @@ public MappingJacksonValue getUser(@PathVariable int id) {
 
     return value;
 }
+
+  // SAMPLE TESTS //
+  -> CRUD https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/LessonsControllerTest.java
