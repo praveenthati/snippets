@@ -14,5 +14,25 @@
                 .andExpect(jsonPath("$.[0].userId").doesNotExist())
                 .andExpect(jsonPath("$.[0].user", equalTo("someuser")));
 	
+
+
 	-> MappingJacksonValue
-	->
+	-> JsonView
+	-> JsonInclude
+	-> JsonProperty
+	-> JsonCreator
+	-> JsonSetter, JsonGetter
+	->  @GetMapping("/{id}")
+public MappingJacksonValue getUser(@PathVariable int id) {
+
+    User user = userService.getUsers(id);
+    MappingJacksonValue value = new MappingJacksonValue(user);
+
+    if (user.isActive()) {
+        value.setSerializationView(Views.ActiveView.class);
+    } else {
+        value.setSerializationView(Views.InActiveView.class);
+    }
+
+    return value;
+}
