@@ -1,9 +1,20 @@
+ 
+    //// SAMPLE GRADLE ////
+	
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('mysql:mysql-connector-java')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('com.google.code.gson:gson:2.8.0')
+
+
+   // READ FILE FROM RESOURCES //
    private String getJSON(String path) throws Exception {
         URL url = this.getClass().getResource(path);
         return new String(Files.readAllBytes(Paths.get(url.getFile())));
     }
 	
-	
+	// SAMPLE READ FILE AND TEST //
 	RequestBuilder request = post("/activities/simplify")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Accept", "application/vnd.galvanize.compact+json")
@@ -15,6 +26,7 @@
                 .andExpect(jsonPath("$.[0].user", equalTo("someuser")));
 	
 
+	// JSON ATTRIBUTES //
 
 	-> MappingJacksonValue
 	-> JsonView
@@ -22,6 +34,8 @@
 	-> JsonProperty
 	-> JsonCreator
 	-> JsonSetter, JsonGetter
+	
+	// CHANGE VIEW RUN TIME //
 	->  @GetMapping("/{id}")
 public MappingJacksonValue getUser(@PathVariable int id) {
 
