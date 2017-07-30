@@ -3,6 +3,8 @@
 	
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-web')
+	compile("org.springframework.boot:spring-boot-devtools")
+	compile('org.springframework.boot:spring-boot-starter-actuator')
     runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile('com.google.code.gson:gson:2.8.0')
@@ -22,6 +24,11 @@
 	spring.jpa.properties.hibernate.show_sql=true
 	spring.jpa.properties.hibernate.use_sql_comments=true
     spring.jpa.properties.hibernate.format_sql=true
+	
+	//actuator //
+	management.port: 9001
+	management.address: 127.0.0.1
+	management.security.enabled=false
 	
 	// JPA //
 	public interface LessonRepository extends CrudRepository<Lesson, Long> {}
@@ -124,6 +131,14 @@ public MappingJacksonValue getUser(@PathVariable int id) {
 		}
 
 	}
+	
+	// TEST PROPERTY SOURCE
+	@TestPropertySource(properties = {
+        "myConfig.delimiter=-",
+        "myConfig.words[0]=Hello",
+        "myConfig.words[1]=there",
+        "myConfig.words[2]=world",
+	})
 
   // SAMPLE TESTS //
   -> CRUD https://github.com/praveenthati/spring-playground/blob/master/src/test/java/com/example/LessonsControllerTest.java
